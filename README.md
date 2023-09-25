@@ -27,6 +27,7 @@ _To be updated with actual project demonstration or guide._
 - [License](#license)
 
 # Code structure
+[(Back to top)](#table-of-contents)
 
 The project follows an organized directory structure, ensuring clarity, modularity, and ease of navigation. Here is a breakdown of the structure:
 
