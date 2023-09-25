@@ -19,11 +19,37 @@ _To be updated with actual project demonstration or guide._
 - [Taxi Demand Prediction 🚗](#taxi-demand-prediction-🚗)
 - [Quickstart/Demo](#quickstartdemo)
 - [Table of Contents](#table-of-contents)
+- [Code Structure](#code-structure)
 - [Installation](#installation)
 - [Usage](#usage)
 - [Development](#development)
 - [Contribute](#contribute)
 - [License](#license)
+
+# Code structure
+
+The project follows an organized directory structure, ensuring clarity, modularity, and ease of navigation. Here is a breakdown of the structure:
+
+```bash
+.
+├── README.md                     - provides an overview of the project
+
+│   ├── raw                       - contains the raw, unprocessed ride data.
+│   │   ├── rides_2022-01.parquet 
+│   │   ├── rides_2022-02.parquet 
+│   │   └── ...
+│   └── transformed               - contains datasets that have undergone some form of processing
+│       ├── tabular_data.parquet  
+│       ├── ts_data_rides_2022_01.parquet  
+│       └── validated_rides_2022_01.parquet 
+│       └── ... 
+├── models                        - any machine learning models.
+├── notebooks                     - exploratory and developmental Jupyter notebooks.
+├── pyproject.toml                - project metadata and dependencies
+├── scripts                       - scripts for automation, data collection, and other utilities.
+├── src                           - directory containing reusable code, functions, and classes.
+└── tests                         - test scripts for functionalities
+```
 
 # Installation
 [(Back to top)](#table-of-contents)
@@ -35,3 +61,5 @@ git clone <your-repo-link>
 cd taxi_demand_predictor
 poetry install
 poetry shell
+```
+
