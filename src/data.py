@@ -76,59 +76,6 @@ def validate_raw_data(
     return rides
 
 
-def fetch_ride_events_from_data_warehouse(
-    from_date: datetime,
-    to_date: datetime
-) -> pd.DataFrame:
-    """
-    Simulates production data by fetching historical taxi ride events from a simulated data warehouse 
-    based on the provided date range, and then adjusting the dates to match the desired production range.
-
-    The function samples historical data from exactly 52 weeks (1 year) ago from the provided dates. 
-    If the `from_date` and `to_date` are in the same month and year, only one file of data is downloaded. 
-    Otherwise, two files, one for each month, are downloaded and merged.
-
-    After fetching, the 'pickup_datetime' column of the resulting DataFrame is shifted forward by 52 weeks 
-    to simulate production data based on the historical data.
-
-    Args:
-        from_date (datetime): The start date of the desired production data range.
-        to_date (datetime): The end date of the desired production data range.
-
-    Returns:
-        pd.DataFrame: A DataFrame containing simulated production taxi ride data for the specified date range.
-
-    Notes:
-        This function assumes the existence of a `load_raw_data` function that can fetch raw data 
-        based on year and month.
-    """
-    from_date_ = from_date - timedelta(days=7*52)
-    to_date_ = to_date - timedelta(days=7*52)
-    print(f'Fetching ride events from {from_date} to {to_date}')
-
-    if (from_date_.year == to_date_.year) and (from_date_.month == to_date_.month):
-        # download 1 file of data only
-        rides = load_raw_data(year=from_date_.year, month=from_date_.month)
-        rides = rides[rides.pickup_datetime >= from_date_]
-        rides = rides[rides.pickup_datetime < to_date_]
-
-    else:
-        # download 2 files from website
-        rides = load_raw_data(year=from_date_.year, month=from_date_.month)
-        rides = rides[rides.pickup_datetime >= from_date_]
-        rides_2 = load_raw_data(year=to_date_.year, month=to_date_.month)
-        rides_2 = rides_2[rides_2.pickup_datetime < to_date_]
-        rides = pd.concat([rides, rides_2])
-
-    # shift the pickup_datetime back 1 year ahead, to simulate production data
-    # using its 7*52-days-ago value
-    rides['pickup_datetime'] += timedelta(days=7*52)
-
-    rides.sort_values(by=['pickup_location_id', 'pickup_datetime'], inplace=True)
-
-    return rides
-
-
 def load_raw_data(
     year: int,
     months: Optional[List[int]] = None
@@ -203,6 +150,9 @@ def load_raw_data(
         # keep only time and origin of the ride
         rides = rides[['pickup_datetime', 'pickup_location_id']]
         return rides
+
+# Transformation Functions
+# ------------------------
 
 
 def add_missing_slots(ts_data: pd.DataFrame) -> pd.DataFrame:
@@ -379,6 +329,9 @@ def transform_ts_data_into_features_and_target(
 
     return features, targets['target_rides_next_hour']
 
+# Helper Functions
+# ----------------
+
 
 def get_cutoff_indices_features_and_target(
     data: pd.DataFrame,
@@ -427,3 +380,56 @@ def get_cutoff_indices_features_and_target(
         subseq_last_idx += step_size
 
     return indices
+
+
+def fetch_ride_events_from_data_warehouse(
+    from_date: datetime,
+    to_date: datetime
+) -> pd.DataFrame:
+    """
+    Simulates production data by fetching historical taxi ride events from a simulated data warehouse 
+    based on the provided date range, and then adjusting the dates to match the desired production range.
+
+    The function samples historical data from exactly 52 weeks (1 year) ago from the provided dates. 
+    If the `from_date` and `to_date` are in the same month and year, only one file of data is downloaded. 
+    Otherwise, two files, one for each month, are downloaded and merged.
+
+    After fetching, the 'pickup_datetime' column of the resulting DataFrame is shifted forward by 52 weeks 
+    to simulate production data based on the historical data.
+
+    Args:
+        from_date (datetime): The start date of the desired production data range.
+        to_date (datetime): The end date of the desired production data range.
+
+    Returns:
+        pd.DataFrame: A DataFrame containing simulated production taxi ride data for the specified date range.
+
+    Notes:
+        This function assumes the existence of a `load_raw_data` function that can fetch raw data 
+        based on year and month.
+    """
+    from_date_ = from_date - timedelta(days=7*52)
+    to_date_ = to_date - timedelta(days=7*52)
+    print(f'Fetching ride events from {from_date} to {to_date}')
+
+    if (from_date_.year == to_date_.year) and (from_date_.month == to_date_.month):
+        # download 1 file of data only
+        rides = load_raw_data(year=from_date_.year, month=from_date_.month)
+        rides = rides[rides.pickup_datetime >= from_date_]
+        rides = rides[rides.pickup_datetime < to_date_]
+
+    else:
+        # download 2 files from website
+        rides = load_raw_data(year=from_date_.year, month=from_date_.month)
+        rides = rides[rides.pickup_datetime >= from_date_]
+        rides_2 = load_raw_data(year=to_date_.year, month=to_date_.month)
+        rides_2 = rides_2[rides_2.pickup_datetime < to_date_]
+        rides = pd.concat([rides, rides_2])
+
+    # shift the pickup_datetime back 1 year ahead, to simulate production data
+    # using its 7*52-days-ago value
+    rides['pickup_datetime'] += timedelta(days=7*52)
+
+    rides.sort_values(by=['pickup_location_id', 'pickup_datetime'], inplace=True)
+
+    return rides
