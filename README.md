@@ -30,7 +30,7 @@ _To be updated with actual project demonstration or guide._
 
 The project follows an organized directory structure, ensuring clarity, modularity, and ease of navigation. Here is a breakdown of the structure:
 
-```bash
+```
 .
 ├── README.md                     - provides an overview of the project
 
@@ -45,6 +45,10 @@ The project follows an organized directory structure, ensuring clarity, modulari
 │       └── ... 
 ├── models                        - any machine learning models.
 ├── notebooks                     - exploratory and developmental Jupyter notebooks.
+│   ├── 01_load_and_validate_raw_data.ipynb
+│   ├── 02_transform_raw_data_into_ts_data.ipynb
+│   ├── 03_transform_ts_data_into_features_and_targets.ipynb
+│   ├── ...
 ├── pyproject.toml                - project metadata and dependencies
 ├── scripts                       - scripts for automation, data collection, and other utilities.
 ├── src                           - directory containing reusable code, functions, and classes.
