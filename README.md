@@ -11,7 +11,19 @@ Predict the upcoming hour's user demand for NYC taxi. This enables optimization 
 
 > **Note**: This project is currently a work in progress. I will be making significant updates throughout this week.
 
-<br><br>
+<br>
+
+# Table of Contents
+
+- [Demo](#web-app-overview)
+- [Code Structure](#code-structure)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Development](#development)
+- [Contribute](#contribute)
+- [License](#license)
+
+<br>
 
 # Web App Overview
 
@@ -24,15 +36,7 @@ The web app serves as an interface to visualize real-time predictions, rendered 
 _To be updated with actual project demonstration or guide._
 https://taxi-demand-predictor-sigmoidal.streamlit.app
 
-# Table of Contents
-
-- [Demo](#web-app-overview)
-- [Code Structure](#code-structure)
-- [Installation](#installation)
-- [Usage](#usage)
-- [Development](#development)
-- [Contribute](#contribute)
-- [License](#license)
+<br>
 
 # Code structure
 [(Back to top)](#table-of-contents)
@@ -63,6 +67,8 @@ The project follows an organized directory structure, ensuring clarity, modulari
 ├── src                           - directory containing reusable code, functions, and classes.
 └── tests                         - test scripts for functionalities
 ```
+
+<br>
 
 # Installation
 [(Back to top)](#table-of-contents)
