@@ -6,19 +6,27 @@
 <a href="http://linkedin.com/in/carlos-melo-data-science/" alt="linkedin"> <img src="https://img.shields.io/badge/LinkedIn-0077B5?logo=linkedin&logoColor=white" /></a> 
 <a href="http://twitter.com/carlos_melo_py" alt="twitter"> <img src="https://img.shields.io/badge/Twitter-1DA1F2?logo=twitter&logoColor=white" /></a> 
 
-Predicting the user demand for a ride-sharing company for the upcoming hour to optimize fleet distribution and maximize revenue. This README will guide you through the various facets of the project, from setup to contribution.
+Predict the upcoming hour's user demand for NYC taxi. This enables optimization of fleet distribution and potential revenue increase. This guide covers all project aspects, from setup to contribution.
+
 
 > **Note**: This project is currently a work in progress. I will be making significant updates throughout this week.
 
-# Quickstart/Demo
+<br><br>
+
+# Web App Overview
+
+The app employs a trained LightGBM model to predict taxi demands for the next hour. Data from January 2022 onwards is stored in a Feature Store on HopsWorks, and new data is fetched every 60 minutes using GitHub Actions.
+
+[![Open in Streamlit](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://taxi-demand-predictor-sigmoidal.streamlit.app)
+
+The web app serves as an interface to visualize real-time predictions, rendered as a time series plot. It offers filters for location selection and provides monitoring of key performance metrics.
 
 _To be updated with actual project demonstration or guide._
+https://taxi-demand-predictor-sigmoidal.streamlit.app
 
 # Table of Contents
 
-- [Taxi Demand Prediction 🚗](#taxi-demand-prediction-🚗)
-- [Quickstart/Demo](#quickstartdemo)
-- [Table of Contents](#table-of-contents)
+- [Demo](#web-app-overview)
 - [Code Structure](#code-structure)
 - [Installation](#installation)
 - [Usage](#usage)
@@ -62,7 +70,7 @@ The project follows an organized directory structure, ensuring clarity, modulari
 To get started, you'll need to clone this repository and set up the environment:
 
 ```shell
-git clone <your-repo-link>
+git clone https://github.com/carlosfab/taxi_demand_predictor
 cd taxi_demand_predictor
 poetry install
 poetry shell
