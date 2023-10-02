@@ -10,7 +10,7 @@ Predict the upcoming hour's user demand for NYC taxi. This enables optimization 
 
 > **Note**: This project is currently a work in progress. I will be making significant updates throughout this week.
 
-<br>
+<br><br>
 
 # Table of Contents
 
@@ -22,7 +22,7 @@ Predict the upcoming hour's user demand for NYC taxi. This enables optimization 
 - [Contribute](#contribute) *(Upcoming)*
 - [License](#license) *(Upcoming)*
 
-<br>
+<br><br>
 
 # Web App Overview
 
