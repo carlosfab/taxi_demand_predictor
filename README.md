@@ -1,13 +1,12 @@
-![Banner](./header.gif)
-
 # Taxi Demand Prediction 🚗
 
-<img src="https://img.shields.io/badge/work%20in%20progress-FF103F" />
+<a href="http://linkedin.com/in/carlos-melo-data-science/" alt="linkedin"><img src="https://img.shields.io/badge/work%20in%20progress-FF103F" /></a>
 <a href="http://linkedin.com/in/carlos-melo-data-science/" alt="linkedin"> <img src="https://img.shields.io/badge/LinkedIn-0077B5?logo=linkedin&logoColor=white" /></a> 
 <a href="http://twitter.com/carlos_melo_py" alt="twitter"> <img src="https://img.shields.io/badge/Twitter-1DA1F2?logo=twitter&logoColor=white" /></a> 
 
 Predict the upcoming hour's user demand for NYC taxi. This enables optimization of fleet distribution and potential revenue increase. This guide covers all project aspects, from setup to contribution.
 
+![Banner](./header.gif)
 
 > **Note**: This project is currently a work in progress. I will be making significant updates throughout this week.
 
@@ -33,8 +32,8 @@ The app employs a trained LightGBM model to predict taxi demands for the next ho
 
 The web app serves as an interface to visualize real-time predictions, rendered as a time series plot. It offers filters for location selection and provides monitoring of key performance metrics.
 
-_To be updated with actual project demonstration or guide._
-https://taxi-demand-predictor-sigmoidal.streamlit.app
+<!-- _To be updated with actual project demonstration or guide._
+https://taxi-demand-predictor-sigmoidal.streamlit.app -->
 
 <br>
 
