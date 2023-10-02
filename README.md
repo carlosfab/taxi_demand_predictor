@@ -14,13 +14,13 @@ Predict the upcoming hour's user demand for NYC taxi. This enables optimization 
 
 # Table of Contents
 
-- [Demo](#web-app-overview)
+- [Web App Overview](#web-app-overview)
 - [Code Structure](#code-structure)
 - [Installation](#installation)
-- [Usage](#usage)
-- [Development](#development)
-- [Contribute](#contribute)
-- [License](#license)
+- [Usage](#usage) *(Upcoming)*
+- [Development](#development) *(Upcoming)*
+- [Contribute](#contribute) *(Upcoming)*
+- [License](#license) *(Upcoming)*
 
 <br>
 
