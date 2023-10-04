@@ -25,11 +25,6 @@ st.markdown(
 home_title = "Taxi Demand Prediction"
 st.markdown(f"""# {home_title} <span style=color:#2E9BF5><font size=5>Web App</font></span>""", unsafe_allow_html=True)
 
-st.markdown("""\n""")
-
-loading_info = st.empty()
-
-st.markdown("#### Greetings 🚖")
 st.write(
     """
     Welcome to the Taxi Demand Predictor Hub, where cutting-edge Machine Learning meets urban mobility needs. For those interested in the technical aspects, the project repository offers comprehensive insights.
@@ -39,9 +34,14 @@ st.write(
 # App Component
 ac.robo_avatar_component()
 
+st.markdown("""\n""")
+
+loading_info = st.empty()
+
+
 # Sidebar
 progress_bar = st.sidebar.header(":gear: Project Progress")
-progress_bar.progress(0)
+progress_bar = st.sidebar.progress(0)
 
 # constant for number of steps in progress bar
 N_STEPS = 4
@@ -107,7 +107,7 @@ if next_hour_predictions_ready:
 elif prev_hour_predictions_ready:
     predictions_df = get_predictions_for_date(predictions_df, current_date - timedelta(hours=1))
     current_date -= timedelta(hours=1)
-    st.subheader('⚠️ The most recent data is not yet available. Using last hour predictions')
+    # st.write('⚠️ The most recent data is not yet available. Using last hour predictions')
 else:
     raise Exception('Features are not available for the last 2 hours. Is your feature pipeline up and running? 🤔')
 
@@ -182,29 +182,27 @@ with st.spinner(text="Generating NYC Map"):
     )
 
     st.pydeck_chart(r)
+    st.sidebar.write('⚠️ Ongoing Work')
     progress_bar.progress(4/N_STEPS)
 
 
-ac.render_contact()
-
-
 # Real-world Machine Learning Section
-st.markdown("\n")
-st.markdown("#### Real-World Machine Learning 🛠")
-st.write("""
-         Welcome to a real-world ML service predicting NYC taxi rides, crafted with MLOps best practices. Transitioning from raw data to a robust data pipeline, and from a model prototype to a fully-functional batch-scoring system, powered by a Feature Store and GitHub Actions.
+st.sidebar.warning("""
+            The deployment of our Streamlit web app is in progress. I'll be deploying and updating the Streamlit app and the repository in the coming days."""
+                   )
+st.sidebar.markdown("\n")
+st.sidebar.markdown("\n\n\n")
+
+st.sidebar.markdown("#### 🛠 About the Project")
+st.sidebar.write("""
+         Welcome to a real-world ML service predicting NYC taxi rides, crafted with MLOps best practices. Transitioning from raw data to a robust data pipeline, and from a model prototype to a fully-functional batch-scoring system.
          """)
 
 # Ongoing Work Section
-st.markdown("#### Ongoing Work 🚧")
-st.markdown("""
-            I'll be deploying and updating the Streamlit app and the repository in the coming days."""
-            )
-st.markdown("\n")
-st.info("""
-        The deployment of our Streamlit web app is in progress. \n\n**Stay updated:**  While waiting for the full app to be live, you can also [check out the repository here.](https://github.com/carlosfab/taxi_demand_predictor)
-.\n\n- Connect with me on [LinkedIn](http://linkedin.com/in/carlos-melo-data-science/).\n- Read my articles on my [personal blog](https://sigmoidal.ai/en).
-        """)
+# st.sidebar.markdown("#### 🚧 Ongoing Work ")
+
 
 # Repository Link Button
-st.link_button(":star: Star the Repository!", "https://github.com/carlosfab/taxi_demand_predictor", type='secondary', use_container_width=True)
+st.sidebar.link_button(":star: Star the Repository!", "https://github.com/carlosfab/taxi_demand_predictor", type='secondary', use_container_width=True)
+
+ac.render_contact()
