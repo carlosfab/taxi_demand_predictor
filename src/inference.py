@@ -41,8 +41,8 @@ def load_batch_of_features_from_store(current_date: datetime) -> pd.DataFrame:
     - The fetched time-series data is then structured into a format where each row 
       represents a `pickup_location_id` and the columns represent historical ride data.
 
-    Raises:
-    - AssertionError: If the time-series data is not complete.
+    # Raises:
+    # - AssertionError: If the time-series data is not complete.
     """
     n_features = config.N_FEATURES
 
@@ -51,6 +51,7 @@ def load_batch_of_features_from_store(current_date: datetime) -> pd.DataFrame:
     # read time-series data from the feature store
     fetch_data_to = current_date - timedelta(hours=1)
     fetch_data_from = current_date - timedelta(days=28)
+    print("FROM-TO DATA:\n", fetch_data_from, fetch_data_to, "\n\n\n")
     print(f'Fetching data from {fetch_data_from} to {fetch_data_to}')
     feature_view = feature_store.get_feature_view(
         name=config.FEATURE_VIEW_NAME,
@@ -64,6 +65,9 @@ def load_batch_of_features_from_store(current_date: datetime) -> pd.DataFrame:
 
     # validate we are not missing data in the feature store
     location_ids = ts_data['pickup_location_id'].unique()
+    print(len(ts_data), n_features*len(location_ids))
+    print(ts_data.head())
+    print(fetch_data_from, fetch_data_to)
     assert len(ts_data) == n_features*len(location_ids), \
         "Time-series data is not complete. Make sure your feature pipeline is up and runnning."
 
@@ -216,7 +220,10 @@ def load_predictions_from_store(
     predictions = predictions[predictions.pickup_hour.between(
         from_pickup_hour, to_pickup_hour)]
 
+    print(predictions.head())
     # Sort by `pickup_hour` and `pickup_location_id`
     predictions.sort_values(by=['pickup_hour', 'pickup_location_id'], inplace=True)
+
+    print(predictions.head())
 
     return predictions
