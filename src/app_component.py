@@ -76,7 +76,7 @@ def load_shape_data_file() -> gpd.geopandas.GeoDataFrame:
     """
     # download zip file
     url_path = "https://d37ci6vzurychx.cloudfront.net/misc/taxi_zones.zip"
-    path = DATA_DIR / 'taxi_zones.zip'
+    path = DATA_DIR / f'taxi_zones.zip'
     response = requests.get(url_path)
 
     if response.status_code == 200:
@@ -90,5 +90,5 @@ def load_shape_data_file() -> gpd.geopandas.GeoDataFrame:
         zip_ref.extractall(DATA_DIR / 'taxi_zones')
 
     # load and return shape data
-    shape_data = gpd.read_file(DATA_DIR / 'taxi_zones/taxi_zones.shp')
+    shape_data = gpd.read_file(DATA_DIR / 'taxi_zones/taxi_zones.shp').to_crs('epsg:4326')
     return shape_data

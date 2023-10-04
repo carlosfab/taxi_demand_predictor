@@ -10,7 +10,8 @@ from src.inference import load_batch_of_features_from_store, load_model_from_reg
 # Page configuration
 st.set_page_config(
     page_title="Taxi Demand Prediction",
-    page_icon="https://api.dicebear.com/5.x/bottts-neutral/svg?seed=taxiDemandPrediction"
+    page_icon="https://api.dicebear.com/5.x/bottts-neutral/svg?seed=taxiDemandPrediction",
+    layout="wide"
 )
 
 # Styles & Customizations
@@ -43,7 +44,7 @@ progress_bar = st.sidebar.header(":gear: Project Progress")
 progress_bar.progress(0)
 
 # constant for number of steps in progress bar
-N_STEPS = 3
+N_STEPS = 4
 
 
 # STEP 1 - load shape data for NYC taxi zones
@@ -53,7 +54,7 @@ def wrapped_load_shape_data_file() -> gpd.geopandas.GeoDataFrame:
 
 
 with loading_info, st.spinner("Downloading data... this may take a while! \n Don't worry, this is a one-time thing. :wink:"):
-    shape_data = wrapped_load_shape_data_file
+    shape_data = wrapped_load_shape_data_file()
     st.sidebar.write(":white_check_mark: Shape data download complete!")
     progress_bar.progress(1/N_STEPS)
 
@@ -66,7 +67,7 @@ def wrapped_load_predictions_from_store(from_pickup_hour: datetime, to_pickup_ho
     return load_predictions_from_store(from_pickup_hour, to_pickup_hour)
 
 
-with st.spinner(text="Fetching predictions from the store"):
+with loading_info, st.spinner(text="Fetching predictions from the store"):
     current_date = pd.to_datetime(datetime.utcnow()).floor('H')
     predictions_df = wrapped_load_predictions_from_store(
         from_pickup_hour=current_date - timedelta(hours=4),
@@ -119,7 +120,69 @@ def wrapped_load_batch_of_features_from_store(current_date: datetime) -> pd.Data
 with loading_info, st.spinner("Fetching data from Feature Store..."):
     features = wrapped_load_batch_of_features_from_store(current_date)
     st.sidebar.write(":white_check_mark: Feature data fetched!")
-    progress_bar.progress(2/N_STEPS)
+    progress_bar.progress(3/N_STEPS)
+
+
+with loading_info, st.spinner(text="Preparing data to plot"):
+
+    def pseudocolor(val, minval, maxval, startcolor, stopcolor):
+        """
+        Convert value in the range minval...maxval to a color in the range
+        startcolor to stopcolor. The colors passed and the the one returned are
+        composed of a sequence of N component values.
+
+        Credits to https://stackoverflow.com/a/10907855
+        """
+        f = float(val-minval) / (maxval-minval)
+        return tuple(f*(b-a)+a for (a, b) in zip(startcolor, stopcolor))
+
+    df = pd.merge(shape_data, predictions_df,
+                  right_on='pickup_location_id',
+                  left_on='LocationID',
+                  how='inner')
+
+    BLACK, GREEN = (0, 0, 0), (0, 255, 0)
+    df['color_scaling'] = df['predicted_demand']
+    max_pred, min_pred = df['color_scaling'].max(), df['color_scaling'].min()
+    df['fill_color'] = df['color_scaling'].apply(lambda x: pseudocolor(x, min_pred, max_pred, BLACK, GREEN))
+    progress_bar.progress(3/N_STEPS)
+
+with st.spinner(text="Generating NYC Map"):
+
+    INITIAL_VIEW_STATE = pdk.ViewState(
+        latitude=40.7831,
+        longitude=-73.9712,
+        zoom=11,
+        max_zoom=16,
+        pitch=45,
+        bearing=0
+    )
+
+    geojson = pdk.Layer(
+        "GeoJsonLayer",
+        df,
+        opacity=0.25,
+        stroked=False,
+        filled=True,
+        extruded=False,
+        wireframe=True,
+        get_elevation=10,
+        get_fill_color="fill_color",
+        get_line_color=[255, 255, 255],
+        auto_highlight=True,
+        pickable=True,
+    )
+
+    tooltip = {"html": "<b>Zone:</b> [{LocationID}]{zone} <br /> <b>Predicted rides:</b> {predicted_demand}"}
+
+    r = pdk.Deck(
+        layers=[geojson],
+        initial_view_state=INITIAL_VIEW_STATE,
+        tooltip=tooltip
+    )
+
+    st.pydeck_chart(r)
+    progress_bar.progress(4/N_STEPS)
 
 
 ac.render_contact()
