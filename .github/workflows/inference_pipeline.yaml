@@ -1,16 +1,19 @@
-name: hourly-taxi-demand-feature-pipeline
+name: hourly-taxi-demand-inference-pipeline
 
 on:
-  schedule:
-   - cron: '0 * * * *'
+  workflow_run:
+    workflows: ["feature-pipeline"]
+    types:
+      - completed
 
   workflow_dispatch:
-
+      
 jobs:
 
-  feature_pipeline:
+  inference_pipeline:
 
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
 
     steps:
       - uses: actions/checkout@v3
@@ -27,7 +30,7 @@ jobs:
         run: poetry install
         if: steps.cache.outputs.cache-hit != 'true'
 
-      - name: execute python workflows from bash script
+      - name: generating new batch of predictions
         env:
           HOPSWORKS_API_KEY: ${{ secrets.HOPSWORKS_API_KEY }}
-        run: poetry run jupyter nbconvert --to notebook --execute notebooks/12_simulated_feature_pipeline.ipynb
+        run: poetry run jupyter nbconvert --to notebook --execute notebooks/14_inference_feature_pipeline.ipynb
