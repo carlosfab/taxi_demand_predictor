@@ -1,4 +1,4 @@
-name: hourly-taxi-demand-inference-pipeline
+name: inference-pipeline
 
 on:
   workflow_run:
